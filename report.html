@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Medical Report</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <style>
+    .download-btn {
+      display: block;
+      color: white;
+      text-decoration: none;
+      font-size: clamp(0.875rem, 3vw, 1rem);
+      font-weight: 500;
+      background: #008000;
+      border-radius: 5px;
+      padding: 12px 20px;
+      transition: transform 0.3s, background 0.3s;
+      text-align: center;
+      margin: 20px auto;
+      border: none;
+      cursor: pointer;
+      width: clamp(180px, 60vw, 220px);
+    }
+    .download-btn:hover {
+      background: #006400;
+      transform: translateY(-3px);
+    }
+    :root {
+      --primary-color: #008000;
+      --secondary-color: #e6f2e6;
+      --text-color: #333;
+      --border-color: #ddd;
+      --background-light: #f9f9f9;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: #fff;
+      color: var(--text-color);
+      line-height: 1.6;
+      -webkit-text-size-adjust: 100%;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .report-container {
+      width: 95%;
+      max-width: 900px;
+      margin: 10px auto;
+      border: 10px double black;
+      background: #fff;
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 3px solid var(--primary-color);
+      padding-bottom: 15px;
+      gap: 15px;
+    }
+
+    .logo-section {
+      display: flex;
+      align-items: center;
+      font-size: clamp(1.25rem, 4vw, 1.875rem);
+      margin-bottom: 10px;
+      flex-grow: 1;
+    }
+
+    .logo-section img.logo {
+      margin-right: 15px;
+      height: 140px;
+      width: 150px;
+      margin-left: 7px;
+      padding: 1px;
+    }
+
+    .lab-info-table {
+      border-collapse: collapse;
+      width: 100%;
+      font-size: clamp(0.5rem, 2vw, 0.7rem);
+      margin-top: 10px;
+      margin-right: 20px;
+      background-color: white;
+    }
+    
+    .lab-info-table th,
+    .lab-info-table td {
+      border: 2px solid #1c1f1d (--border-color);
+      padding: 1px 17px;
+      text-align: left;
+    }
+    
+    .lab-info-table th {
+      background-color: var(--background-light);
+    }
+
+    .matrix {
+      font-size: 0.75rem;
+      line-height: 1.2;
+    }
+
+    .health-plus {
+      display: flex;
+      align-items: center;
+    }
+
+    .health-plus img {
+      height: 20px;
+      margin-right: 5px;
+    }
+
+    .Intro {
+      background-color: var(--background-light);
+      padding: 10px;
+      border-radius: 5px;
+      background-color: #9babb4;
+    }
+
+    .info {
+      margin-top: -15px;
+    }
+
+    .exam-sections {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+    
+    .exam-section {
+      flex: 1;
+      min-width: 0;
+      overflow-x: auto;
+    }
+    
+    h1 {
+      font-size: clamp(1.25rem, 4vw, 1.5rem);
+      font-weight: 700;
+      color: var(--text-color);
+      text-align: center;
+      margin: 15px 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+      table-layout: fixed;
+    }
+
+    th, td {
+      border: 1px solid var(--border-color);
+      padding: 4px;
+      font-size: clamp(0.75rem, 3vw, 0.875rem);
+      word-wrap: break-word;
+    }
+
+    th {
+      background-color: var(--secondary-color);
+      font-weight: 700;
+      
+    }
+
+    .short {
+      padding: 23.6px;
+    }
+
+    .section-title {
+      background-color: var(--primary-color);
+      color: white;
+      font-weight: bold;
+      text-align: center;
+      padding: 2px;
+      font-size: clamp(0.875rem, 3vw, 1rem);
+    }
+
+    .footer-section {
+      margin-top: auto;
+      width: 100%;
+    }
+
+    .footer-content {
+      background-color: var(--primary-color);
+      color: white;
+      font-size: clamp(0.625rem, 2vw, 0.75rem);
+      text-align: center;
+      border-top: 2px solid;
+      padding: 10px;
+      margin-top: 20px;
+      border-radius: 0 0 4px 4px;
+    }
+
+    .note {
+      font-size: clamp(0.625rem, 2vw, 0.6875rem);
+      margin-top: 5px;
+      color: white;
+    }
+
+    .unfit {
+      font-size: clamp(1.5rem, 8vw, 2.5rem);
+      font-weight: bold;
+      color: red;
+      margin-left: 364px;
+      margin-top: -100px;
+    }
+
+    .fit {
+      font-size: clamp(1.5rem, 8vw, 2.5rem);
+      font-weight: bold;
+      color: green;
+      margin-left: 395px;
+      margin-top: -100px;
+    }
+
+    .signature {
+      margin-top: -90px;
+      
+    }
+
+    .signature img{
+      height: 50px;
+      width: 95px;
+      margin-top: -180px;
+      margin-right: px;
+    }
+
+    .signature-text {
+      font-size: clamp(0.625rem, 2vw, 0.6875rem);
+      margin-right: 40px;
+      margin-top: -10px;
+      text-align: left;
+    }
+
+    .qr-container {
+      display: flex;
+      margin-top: -17px;
+      margin-left: 15px;
+      
+    }
+    
+    #qrCanvas {
+      width: clamp(90px, 15vw, 120px);
+      height: clamp(90px, 15vw, 110px);
+    }
+    
+    .hidden {
+      display: none;
+    }
+
+    .bottom-section {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 20px;
+      gap: 20px;
+    }
+
+    .status-container {
+      width: 100%;
+      text-align: center;
+    }
+
+    .signature-container {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .download-btn {
+      display: block;
+      color: white;
+      text-decoration: none;
+      font-size: clamp(0.875rem, 3vw, 1rem);
+      font-weight: 500;
+      background: var(--primary-color);
+      border-radius: 5px;
+      padding: 12px 20px;
+      transition: transform 0.3s, background 0.3s;
+      text-align: center;
+      margin: 20px auto;
+      border: none;
+      cursor: pointer;
+      width: clamp(180px, 60vw, 220px);
+    }
+    
+    .download-btn:hover {
+      background: #006400;
+      transform: translateY(-3px);
+    }
+
+    
+
+
+/* Tablet and larger screens */
+@media (min-width: 600px) {
+  .exam-sections {
+    flex-direction: row;
+  }
+  .lab-info-table {
+    width: auto;
+  }
+  .bottom-section {
+    flex-direction: row;
+    align-items: flex-end;
+  }
+  .status-container {
+    text-align: left;
+  }
+}
+
+
+
+
+    /* Tablet and larger screens */
+   @media (min-width: 600px) {
+      .exam-sections {
+        flex-direction: row;
+      }
+
+      .lab-info-table {
+        width: auto;
+      }
+
+      .bottom-section {
+        flex-direction: row;
+        align-items: flex-end;
+      }
+
+      .status-container {
+        text-align: left;
+      }
+    }
+
+    /* Print styles */
+  @media print {
+      .download-btn {
+        display: none;
+      }
+      
+      body {
+        background: white;
+      }
+      
+      .report-container {
+        border: none;
+        margin: 0;
+        padding: 0;
+        max-width: 100%;
+      }
+
+      .section-title, .footer-content {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+    }
+    @media (max-width: 600px) {
+  .bottom-section {
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 10px !important;
+    width: 100%;
+  }
+  .qr-container {
+    justify-content: center !important;
+    margin: 0 auto 8px auto !important;
+    width: 100%;
+  }
+  .status-container {
+    text-align: center !important;
+    width: 100% !important;
+    margin: 0 !important;
+  }
+  .fit, .unfit {
+    margin: 0 auto 8px auto !important;
+    display: block !important;
+    float: none !important;
+    text-align: center !important;
+  }
+  .signature-container {
+    justify-content: center !important;
+    width: 100% !important;
+    margin: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+  }
+  .signature {
+    margin: 0 auto 10px auto !important;
+    text-align: center !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+  }
+  .signature img {
+    margin: 0 auto 6px auto !important;
+    display: block !important;
+  }
+  .signature-text {
+    margin: 0 0 16px 0 !important; /* Adds space below doctor name */
+    text-align: center !important;
+    font-size: 0.85em !important;
+  }
+}
+    
+  </style>
+</head>
+<body>
+  <div class="report-container">
+    <header class="Intro">
+      <div class="logo-section">
+        <img src="Image.png" alt="Health Plus Logo" class="logo">
+        <strong style="margin-left: 10px;">Diagnostic Centre</strong>
+      </div>
+      <table class="lab-info-table">
+        <tr>
+          <th>LAB SR NO</th>
+          <td id="labSrNo"></td>
+        </tr>
+        <tr>
+          <th>COUNTRY</th>
+          <td>India</td>
+        </tr>
+        <tr>
+           <th>EXAMINED DATE</th>
+           <td id="examinedDate">2025-05-22</td>
+        </tr>
+        <tr>
+          <th>EXPIRY DATE</th>
+          <td id="expiryDate">2025-05-22</td>
+        </tr>
+      </table>              
+    </header>
+
+<!-- Candidate Information Section -->
+<div class="info" style="margin-top: 0;">
+  <h1 class="section-title">CANDIDATE INFORMATION</h1>
+  <div style="display: flex; align-items: flex-start; gap: 24px;">
+    <div style="flex: 1;">
+      <table>
+        <tr><th>Full Name</th><td id="fullName"></td><th>Age</th><td id="age"></td></tr>
+        <tr><th>DOB</th><td id="dob"></td><th>Post Applied</th><td id="post"></td></tr>
+        <tr><th>Height</th><td id="height"></td><th>Weight</th><td id="weight"></td></tr>
+        <tr><th>Gender</th><td id="gender"></td><th>Nationality</th><td id="nationality"></td></tr>
+        <tr><th>Passport No</th><td id="passportNo"></td><th>Marital Status</th><td id="maritalStatus"></td></tr>
+      </table>
+    </div>
+    <div style="
+      min-width: 110px;
+      max-width: 110px;
+      min-height: 150px;
+      max-height: 150px;
+      box-sizing: border-box;
+      padding: 6px;
+      background: #fff;
+      border: 2px solid #ccc;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    ">
+      <img id="passportPhoto" src="" alt="Passport Photo"
+        style="
+          width: 98px;
+          height: 138px;
+          object-fit: cover;
+          border-radius: 4px;
+          background: #fff;
+          display: block;
+        " />
+    </div>
+  </div>
+</div>
+
+    <div class="exam-sections">
+      <div class="exam-section">
+        <div class="section-title">MEDICAL EXAMINATION</div>
+        <table>
+          <tr><th colspan="2" class="short">Eyes</th></tr>
+          <tr><td>Vision Right Eye</td><td id="visionRight"></td></tr>
+          <tr><td>Vision Left Eye</td><td id="visionLeft"></td></tr>
+          <tr><th colspan="2" class="short">Ear</th></tr>
+          <tr><td>Right Ear</td><td id="earRight"></td></tr>
+          <tr><td>Left Ear</td><td id="earLeft"></td></tr>
+          <tr><th colspan="2" class="short">Systematic Exam</th></tr>
+          <tr><td>Blood Pressure</td><td id="bp"></td></tr>
+          <tr><td>Heart Rate</td><td id="heartRate"></td></tr>
+          <tr><td>Lungs</td><td id="lungs"></td></tr>
+          <tr><td>Abdomen</td><td id="abdomen"></td></tr>
+          <tr><td>Hydrocele</td><td id="hydrocele"></td></tr>
+          <tr><th colspan="2" class="short">Venereal Diseases</th></tr>
+          <tr><td>VDRL/TPHA</td><td id="vdrl"></td></tr>
+          <tr><td>Chest X-ray</td><td id="chestXray"></td></tr>
+          <tr><td>Pregnancy</td><td id="pregnancy"></td></tr>
+          <tr><td>Remarks</td><td id="remarks"></td></tr>
+        </table>
+      </div>
+
+      <div class="exam-section">
+        <div class="section-title">LABORATORY EXAMINATION</div>
+        <table>
+          <tr><th colspan="2">Urine</th></tr>
+          <tr><td>Sugar</td><td id="urineSugar"></td></tr>
+          <tr><td>Albumin</td><td id="urineAlbumin"></td></tr>
+          <tr><td>Others</td><td id="urineOthers"></td></tr>
+          <tr><th colspan="2">Blood</th></tr>
+          <tr><td>Haemoglobin</td><td id="haemoglobin"></td></tr>
+          <tr><td>Malaria Rapid</td><td id="malaria"></td></tr>
+          <tr><td>Microfilaria</td><td id="microfilaria"></td></tr>
+          <tr><td>Blood Group</td><td id="bloodGroup"></td></tr>
+          <tr><th colspan="2">Stool</th></tr>
+          <tr><td>Salmonella/Shigella</td><td id="salmonella"></td></tr>
+          <tr><td>Bilharziasis</td><td id="bilharziasis"></td></tr>
+          <tr><td>Helminths</td><td id="helminths"></td></tr>
+          <tr><td>V. Cholera</td><td id="cholera"></td></tr>
+          <tr><th colspan="2">SEROLOGY ELISA</th></tr>
+          <tr><td>HBsAg</td><td id="hbsag"></td></tr>
+          <tr><td>Anti HCV</td><td id="hcv"></td></tr>
+          <tr><td>HIV</td><td id="hiv"></td></tr>
+          <tr><td>Urea</td><td id="urea"></td></tr>
+          <tr><td>Creatinine</td><td id="creatinine"></td></tr>
+          <tr><td>Blood Urea</td><td id="bloodUrea"></td></tr>
+          <tr><td>KFT</td><td id="kft"></td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="footer-section">
+      <div class="qr-container">
+        <div id="qrPlaceholder">Generating QR Code...</div>
+        <canvas id="qrCanvas" class="hidden"></canvas>
+      </div>
+
+      <div class="bottom-section">
+        <div class="status-container">
+          <div id="fitStatus"></div>
+        </div>
+        <div class="signature-container">
+          <div class="signature">
+            <img src="Signature.png" alt="Doctor's Signature">
+            <p class="signature-text">Dr. Rahul Dutta <br> MBBS <br> Reg No. 291162</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-content">
+        Address: Imli Chatti, Main road, Infront of Vaishali Sweets, Muzaffarpur-842001<br />
+        Email: healthplusmtpf@gmail.com | +91-9634863797
+        <div class="note">Note: This report is confidential and intended solely for the individual named.</div>
+      </div>
+    </div>
+  </div>
+
+  <button class="download-btn" onclick="downloadPDF()">Download Report</button>
+
+  <!-- Include QR code library -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
+  <!-- Include jsPDF library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <!-- Include html2canvas for better PDF rendering -->
+
+
+<script>
+  
+  document.addEventListener('DOMContentLoaded', async function() {
+    
+    initSampleData();
+    
+    
+    setDates();
+    populateReport();
+    
+    
+    await generateQRCode();
+    
+    
+    document.getElementById('downloadBtn').addEventListener('click', downloadPDF);
+  });
+
+  
+  function initSampleData() {
+    if (!localStorage.getItem('fullName')) {
+      const sampleData = {
+        fullName: 'John Doe',
+        age: '35',
+        dob: '1990-01-15',
+        post: 'Engineer',
+        height: '175 cm',
+        weight: '70 kg',
+        gender: 'Male',
+        nationality: 'Indian',
+        passportNo: 'AB1234567',
+        maritalStatus: 'Single',
+        visionRight: '6/6',
+        visionLeft: '6/6',
+        earRight: 'Normal',
+        earLeft: 'Normal',
+        bp: '120/80 mmHg',
+        heartRate: '72 bpm',
+        lungs: 'Clear',
+        abdomen: 'Normal',
+        hydrocele: 'None',
+        vdrl: 'Negative',
+        chestXray: 'Normal',
+        pregnancy: 'N/A',
+        remarks: 'All parameters normal',
+        urineSugar: 'Negative',
+        urineAlbumin: 'Negative',
+        urineOthers: 'None',
+        haemoglobin: '14.5 g/dL',
+        malaria: 'Negative',
+        microfilaria: 'Negative',
+        bloodGroup: 'B+',
+        salmonella: 'Negative',
+        bilharziasis: 'Negative',
+        helminths: 'Negative',
+        cholera: 'Negative',
+        hbsag: 'Negative',
+        hcv: 'Negative',
+        hiv: 'Negative',
+        urea: '25 mg/dL',
+        creatinine: '0.9 mg/dL',
+        bloodUrea: '15 mg/dL',
+        kft: 'Normal',
+        fitStatus: 'FIT'
+      };
+      
+      Object.entries(sampleData).forEach(([key, value]) => {
+        localStorage.setItem(key, value);
+      });
+    }
+  }
+
+  
+  function generateLabSrNo() {
+    let lastSrNo = localStorage.getItem('lastLabSrNo');
+    if (!lastSrNo) {
+      lastSrNo = 1000;
+    } else {
+      lastSrNo = parseInt(lastSrNo);
+    }
+    const newSrNo = lastSrNo + 1;
+    localStorage.setItem('lastLabSrNo', newSrNo.toString());
+    return newSrNo;
+  }
+
+  function imgToBase64(imgElement) {
+  return new Promise((resolve, reject) => {
+    
+    if (imgElement.src.startsWith('data:')) {
+      resolve(imgElement.src);
+      return;
+    }
+    const img = new window.Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = function() {
+      const canvas = document.createElement('canvas');
+      canvas.width = img.width;
+      canvas.height = img.height;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0);
+      try {
+        const dataURL = canvas.toDataURL('image/png');
+        resolve(dataURL);
+      } catch (e) {
+        reject(e);
+      }
+    };
+    img.onerror = reject;
+    img.src = imgElement.src;
+  });
+}
+
+  
+  function setDates() {
+    const today = new Date();
+    const expiry = new Date(today);
+    expiry.setMonth(today.getMonth() + 1);
+
+    const format = d => d.toISOString().split('T')[0];
+    document.getElementById('examinedDate').textContent = format(today);
+    document.getElementById('expiryDate').textContent = format(expiry);
+
+    localStorage.setItem('examinedDate', format(today));
+    localStorage.setItem('expiryDate', format(expiry));
+  }
+
+  
+  async function generateQRCode() {
+    try {
+      
+      const reportSummary = {
+        name: localStorage.getItem('fullName'),
+        passport: localStorage.getItem('passportNo'),
+        examinedDate: localStorage.getItem('examinedDate'),
+        status: localStorage.getItem('fitStatus'),
+        labSrNo: localStorage.getItem('labSrNo')
+      };
+      
+      const qrData = JSON.stringify(reportSummary);
+      
+      const qrCanvas = document.getElementById('qrCanvas');
+      const qrPlaceholder = document.getElementById('qrPlaceholder');
+      
+      QRCode.toCanvas(qrCanvas, qrData, {
+        width: 100,
+        margin: 2,
+        color: {
+          dark: '#000000',
+          light: '#ffffff'
+        }
+      }, function(error) {
+        if (error) {
+          console.error('QR Code generation error:', error);
+          qrPlaceholder.textContent = 'QR Code Error';
+        } else {
+          qrPlaceholder.classList.add('hidden');
+          qrCanvas.classList.remove('hidden');
+        }
+      });
+    } catch (error) {
+      console.error('Error generating QR code:', error);
+      document.getElementById('qrPlaceholder').textContent = 'Error generating QR code';
+    }
+  }
+function waitForPassportPhoto() {
+  return new Promise((resolve) => {
+    const img = document.getElementById('passportPhoto');
+    if (!img) return resolve();
+    if (img.complete && img.naturalWidth !== 0) return resolve();
+    img.onload = resolve;
+    img.onerror = resolve;
+  });
+}
+  function downloadPDF() {
+      window.print();
+    }
+    
+
+    function populateReport() {
+      const labSrNo = generateLabSrNo();
+      document.getElementById('labSrNo').textContent = labSrNo;
+      localStorage.setItem('labSrNo', labSrNo.toString());
+
+      const elements = document.querySelectorAll('[id]');
+      elements.forEach(element => {
+        const id = element.id;
+        if (id !== 'qrCanvas' && id !== 'qrPlaceholder' && id !== 'labSrNo' && id !== 'downloadBtn' && id !== 'passportPhoto') {
+          const value = localStorage.getItem(id) || '';
+          element.textContent = value;
+        }
+      });
+
+      
+      const passportImg = document.getElementById('passportPhoto');
+      const imgData = localStorage.getItem('passportImageBase64');
+      if (passportImg && imgData) {
+        passportImg.src = imgData;
+        passportImg.style.display = 'block';
+      } else if (passportImg) {
+        passportImg.style.display = 'none';
+      }
+
+      const fitStatus = localStorage.getItem('fitStatus') || 'FIT';
+      const fitStatusElement = document.getElementById('fitStatus');
+      fitStatusElement.textContent = fitStatus;
+      fitStatusElement.className = fitStatus === 'UNFIT' ? 'unfit' : 'fit';
+    }
+
+
+</script>
+</body>
+</html>

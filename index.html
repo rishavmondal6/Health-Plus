@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Health Plus</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Roboto', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: #f2f6fc;
+      color: #333;
+    }
+
+    header {
+      background: #0077b6;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 2rem auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      border-bottom: 5px solid #0077b6;
+      padding-bottom: 0.5rem;
+      margin-top: 2rem;
+    }
+
+    h3 {
+      border-bottom: 1.5px solid #0077b6;
+      padding-bottom: 0.5rem;
+      margin-top: 2rem;
+    }
+
+    form label {
+      display: block;
+      margin-top: 1rem;
+    }
+
+    form input,
+    form select,
+    form textarea {
+      width: 100%;
+      padding: 0.5rem;
+      margin-top: 0.25rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .form-section {
+      margin-top: 2rem;
+    }
+
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .col {
+      flex: 1 1 300px;
+    }
+
+    .col2 {
+        flex: 1 1 400px;
+      }
+
+    button {
+      background: #0077b6;
+      color: white;
+      font-size: medium;
+      padding: 0.75rem 2rem;
+      border: none;
+      border-radius: 5px;
+      margin-top: 2rem;
+      cursor: pointer;
+    }
+
+    @media (max-width: 600px) {
+      .col {
+        flex: 1 1 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+    <header>
+        <div style="display: flex; align-items: center; justify-content: center; gap: 1rem; margin-top: 10px; ">
+          <img src="Image.png" alt="Health Plus Logo" style="height: 100px; width: 120px;" />
+          <h2 style="margin: 0;">Health Plus - Medical Report Form</h2>
+        </div>
+    </header>      
+  <div class="container">
+    <form id="medicalForm">
+      <h2>1. Candidate Information</h2>
+      <div class="row">
+        <div class="col">
+          <label>Full Name</label>
+          <input type="text" name="fullName" required />
+        </div>
+        <div class="col">
+          <label>Age</label>
+          <input type="number" name="age" required />
+        </div>
+        <div class="col">
+          <label>Date of Birth</label>
+          <input type="date" name="dob" required />
+        </div>
+        <div class="col">
+          <label>Post Applied For</label>
+          <input type="text" name="post" />
+        </div>
+        <div class="col">
+          <label>Height (cm/ft)</label>
+          <input type="text" name="height" />
+        </div>
+        <div class="col">
+          <label>Weight (kg)</label>
+          <input type="text" name="weight" />
+        </div>
+        <div class="col">
+          <label>Nationality</label>
+          <select name="nationality">
+            <option>Indian</option>
+          </select>
+        </div>
+        <div class="col">
+          <label>Gender</label>
+          <select name="gender">
+            <option>Male</option>
+            <option>Female</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="col">
+          <label>Marital Status</label>
+          <select name="maritalStatus">
+            <option>Single</option>
+            <option>Married</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="col">
+          <label>Passport No.</label>
+          <input type="text" name="passportNo" />
+        </div>
+        <div class="col">
+          <label>Place of Issue</label>
+          <input type="text" name="placeIssue" />
+        </div>
+        <div class="col">
+          <label>Date of Issue</label>
+          <input type="date" name="dateIssue" />
+        </div>
+        <div class="col">
+          <label>Passport Image</label>
+          <input type="file" name="passportImage" accept="image/jpeg, image/png" />
+        </div>
+      </div>
+
+      <h2>2. Medical Examination</h2>
+
+      <div class="form-section">
+        <h3>Eyes</h3>
+        <div class="row">
+          <div class="col2">
+            <label>Vision Right Eye</label>
+            <input type="text" name="visionRight" />
+          </div>
+          <div class="col2">
+            <label>Vision Left Eye</label>
+            <input type="text" name="visionLeft" />
+          </div>
+        </div>
+      
+        <h3>Ear</h3>
+        <div class="row">
+          <div class="col2">
+            <label>Right Ear</label>
+            <input type="text" name="earRight" />
+          </div>
+          <div class="col2">
+            <label>Left Ear</label>
+            <input type="text" name="earLeft" />
+          </div>
+        </div>
+      
+        <h3>Systematic Exam</h3>
+        <div class="row">
+          <div class="col2">
+            <label>Blood Pressure</label>
+            <input type="text" name="bp" />
+          </div>
+          <div class="col2">
+            <label>Heart Rate</label>
+            <input type="text" name="heartRate" />
+          </div>
+          <div class="col2">
+            <label>Lungs</label>
+            <input type="text" name="lungs" />
+          </div>
+          <div class="col2">
+            <label>Abdomen</label>
+            <input type="text" name="abdomen" />
+          </div>
+          <div class="col2">
+            <label>Hydrocele</label>
+            <input type="text" name="hydrocele" />
+          </div>
+        </div>
+      
+        <h3>Venereal Diseases</h3>
+        <div class="row">
+          <div class="col2">
+            <label>VDRL/TPHA</label>
+            <select name="vdrl">
+              <option>Reactive</option>
+              <option>Non-reactive</option>
+            </select>
+          </div>
+          <div class="col2">
+            <label>Chest X-ray</label>
+            <input type="text" name="chestXray" />
+          </div>
+          <div class="col2">
+            <label>Pregnancy</label>
+            <input type="text" name="pregnancy" />
+          </div>
+          <div class="col2">
+            <label>Remarks</label>
+            <input type="text" name="remarks" />
+          </div>
+        </div>
+      </div>
+      
+      <h2>3. Laboratory Examination</h2>
+
+      <h3>Urine</h3>
+      <div class="row">
+        <div class="col2"><label>Urine Sugar</label><input type="text" name="urineSugar" /></div>
+        <div class="col2"><label>Urine Albumin</label><input type="text" name="urineAlbumin" /></div>
+        <div class="col2"><label>Urine Others</label><input type="text" name="urineOthers" /></div>
+      </div>
+
+      <h3>Blood</h3>
+      <div class="row">
+        <div class="col2"><label>Haemoglobin</label><input type="number" name="haemoglobin" /></div>
+        <div class="col2"><label>Malaria Rapid</label><input type="text" name="malaria" /></div>
+        <div class="col2"><label>Microfilaria</label><input type="text" name="microfilaria" /></div>
+        <div class="col2"><label>Blood Group</label><input type="text" name="bloodGroup" /></div>
+      </div>
+
+      <h3>Stool</h3>
+      <div class="row">
+        <div class="col2"><label>Salmonella/Shigella</label><input type="text" name="salmonella" /></div>
+        <div class="col2"><label>Bilharziasis</label><input type="text" name="bilharziasis" /></div>
+        <div class="col2"><label>Helminths</label><input type="text" name="helminths" /></div>
+        <div class="col2"><label>Y. Cholerae</label><input type="text" name="cholera" /></div>
+      </div>
+
+      <h3>Serology (ELISA)</h3>
+      <div class="row">
+        <div class="col2"><label>HBsAg</label>
+          <select name="hbsag"><option>Reactive</option><option>Non-reactive</option></select>
+        </div>
+        <div class="col2"><label>Anti HCV</label>
+          <select name="hcv"><option>Reactive</option><option>Non-reactive</option></select>
+        </div>
+        <div class="col2"><label>HIV</label>
+          <select name="hiv"><option>Reactive</option><option>Non-reactive</option></select>
+        </div>
+        <div class="col2"><label>Urea</label><input type="number" name="urea" /></div>
+        <div class="col2"><label>Creatinine</label><input type="number" name="creatinine" /></div>
+        <div class="col2"><label>Blood Urea</label><input type="number" name="bloodUrea" /></div>
+        <div class="col2"><label>K.F.T</label><input type="text" name="kft" /></div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <label>FIT/UNFIT Status</label>
+          <select name="fitStatus">
+            <option>FIT</option>
+            <option>UNFIT</option>
+          </select>
+        </div>
+      </div>
+      <button type="submit">Generate Report</button>
+    </form>
+  </div>
+</body>
+
+<script>
+
+
+document.querySelector('input[name="passportImage"]').addEventListener('change', function(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(evt) {
+    localStorage.setItem('passportImageBase64', evt.target.result);
+  };
+  reader.readAsDataURL(file);
+});
+
+
+  document.getElementById("medicalForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    
+    
+    for (const [key, value] of formData.entries()) {
+      if (key === "passportImage" && event.target.passportImage.files[0]) {
+        
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          localStorage.setItem("passportImage", e.target.result);
+          
+          for (const [k, v] of formData.entries()) {
+            if (k !== "passportImage") localStorage.setItem(k, v);
+          }
+          window.location.href = "report.html";
+        };
+        reader.readAsDataURL(event.target.passportImage.files[0]);
+        return;
+      }
+      if (key !== "passportImage") {
+        localStorage.setItem(key, value);
+      }
+    }
+    window.location.href = "report.html";
+  });
+</script>
+  
+</html>
