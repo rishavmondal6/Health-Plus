@@ -1,3 +1,5 @@
+Live Hosting Link - https://gentle-haupia-3bf3a8.netlify.app/
+
 🏥 Health Plus - Medical Report Generator Health Plus is a web-based medical report generation system that allows diagnostic centers or healthcare professionals to create, preview, and download detailed medical reports in PDF format. The application includes a structured form for patient data collection and automatically generates a stylized, printable medical report complete with a QR code, lab number, doctor's signature, and fit/unfit status.
 
 📌 Features ✅ Interactive medical report form with structured sections:
